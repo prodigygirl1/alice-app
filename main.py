@@ -35,6 +35,9 @@ sessionStorage = {}
 # Внутри функции доступен request.json - это JSON,
 # который отправила нам Алиса в запросе POST
 def main():
+    print('Hello World')
+
+
     logging.info(f'Request: {request.json!r}')
 
     # Начинаем формировать ответ, согласно документации
