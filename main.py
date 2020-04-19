@@ -135,4 +135,5 @@ def get_suggests(user_id):
 
 
 if __name__ == '__main__':
+    print('Tyta')
     app.run()
