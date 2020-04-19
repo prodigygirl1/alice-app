@@ -1,6 +1,6 @@
 # импортируем библиотеки
 from flask import Flask, request
-import logging
+#import logging
 
 # библиотека, которая нам понадобится для работы с JSON
 import json
@@ -15,7 +15,7 @@ import json
 app = Flask(__name__)
 
 # Устанавливаем уровень логирования
-logging.basicConfig(level=logging.INFO)
+#logging.basicConfig(level=logging.INFO)
 
 # Создадим словарь, чтобы для каждой сессии общения
 # с навыком хранились подсказки, которые видел пользователь.
@@ -35,10 +35,10 @@ sessionStorage = {}
 # Внутри функции доступен request.json - это JSON,
 # который отправила нам Алиса в запросе POST
 def main():
-    print('Hello World')
+    print('Metka 1')
 
 
-    logging.info(f'Request: {request.json!r}')
+    #logging.info(f'Request: {request.json!r}')
 
     # Начинаем формировать ответ, согласно документации
     # мы собираем словарь, который потом при помощи
@@ -56,7 +56,7 @@ def main():
     # непосредственно за ведение диалога
     handle_dialog(request.json, response)
 
-    logging.info(f'Response:  {response!r}')
+    #logging.info(f'Response:  {response!r}')
 
     # Преобразовываем в JSON и возвращаем
     return json.dumps(response)
