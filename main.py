@@ -63,6 +63,7 @@ def main():
 
 
 def handle_dialog(req, res):
+    global animal
     user_id = req['session']['user_id']
 
     if req['session']['new']:
@@ -78,7 +79,7 @@ def handle_dialog(req, res):
             ]
         }
         # Заполняем текст ответа
-        res['response']['text'] = 'Привет! Купи слона!'
+        res['response']['text'] = f'Привет! Купи {animal}!'
         # Получим подсказки
         res['response']['buttons'] = get_suggests(user_id)
         return
@@ -101,18 +102,22 @@ def handle_dialog(req, res):
                        req['request']['original_utterance'].lower().split()
                        ))):
         # Пользователь согласился, прощаемся.
-        res['response']['text'] = 'Слона можно найти на Яндекс.Маркете!'
-        res['response']['end_session'] = True
-        return
+        res['response']['text'] = f'{animal} можно найти на Яндекс.Маркете!'
+        if animal == d[ELEPHANT]:
+            animal = d[RABBIT]
+        else:
+            res['response']['end_session'] = True
+            return
 
     # Если нет, то убеждаем его купить слона!
     res['response']['text'] = \
-        f"Все говорят '{req['request']['original_utterance']}', а ты купи слона!"
+        f"Все говорят '{req['request']['original_utterance']}', а ты купи {animal}!"
     res['response']['buttons'] = get_suggests(user_id)
 
 
 # Функция возвращает две подсказки для ответа.
 def get_suggests(user_id):
+    global animal
     session = sessionStorage[user_id]
 
     # Выбираем две первые подсказки из массива.
@@ -130,13 +135,17 @@ def get_suggests(user_id):
     if len(suggests) < 2:
         suggests.append({
             "title": "Ладно",
-            "url": "https://market.yandex.ru/search?text=слон",
+            "url": f"https://market.yandex.ru/search?text={animal[:-1]}",
             "hide": True
         })
 
     return suggests
 
 
+ELEPHANT = 0
+RABBIT = 1
+d = {ELEPHANT: 'слона', RABBIT: 'кролика'}
+animal = d[ELEPHANT]
 if __name__ == '__main__':
     port = int(os.environ.get("PORT", 5000))
     app.run(host='0.0.0.0', port=port)
