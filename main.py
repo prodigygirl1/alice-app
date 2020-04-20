@@ -105,6 +105,8 @@ def handle_dialog(req, res):
         res['response']['text'] = f'{animal} можно найти на Яндекс.Маркете!'
         if animal == d[ELEPHANT]:
             animal = d[RABBIT]
+            res['response']['text'] = f'А теперь купи {animal}'
+            return
         else:
             res['response']['end_session'] = True
             return
