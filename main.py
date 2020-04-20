@@ -37,8 +37,6 @@ sessionStorage = {}
 # Внутри функции доступен request.json - это JSON,
 # который отправила нам Алиса в запросе POST
 def main():
-    print('Metka 1')
-
 
     logging.info(f'Request: {request.json!r}')
 
@@ -93,12 +91,15 @@ def handle_dialog(req, res):
     # Если он написал 'ладно', 'куплю', 'покупаю', 'хорошо',
     # то мы считаем, что пользователь согласился.
     # Подумайте, всё ли в этом фрагменте написано "красиво"?
-    if req['request']['original_utterance'].lower() in [
+    agreement_answers = [
         'ладно',
         'куплю',
         'покупаю',
         'хорошо'
-    ]:
+    ]
+    if len(list(filter(lambda word: word in agreement_answers,
+                       req['request']['original_utterance'].lower().split()
+                       ))):
         # Пользователь согласился, прощаемся.
         res['response']['text'] = 'Слона можно найти на Яндекс.Маркете!'
         res['response']['end_session'] = True
