@@ -102,10 +102,11 @@ def handle_dialog(req, res):
                        req['request']['original_utterance'].lower().split()
                        ))):
         # Пользователь согласился, прощаемся.
-        res['response']['text'] = f'{animal} можно найти на Яндекс.Маркете!'
+        res['response']['text'] = f'{animal.title()} можно найти на Яндекс.Маркете!'
         if animal == d[ELEPHANT]:
             animal = d[RABBIT]
             res['response']['text'] = f'А теперь купи {animal}'
+            res['response']['buttons'] = get_suggests(user_id)
             return
         else:
             res['response']['end_session'] = True
