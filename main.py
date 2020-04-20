@@ -62,6 +62,16 @@ def main():
     return json.dumps(response)
 
 
+def init_sessionstorage(user_id):
+    sessionStorage[user_id] = {
+        'suggests': [
+            "Не хочу.",
+            "Не буду.",
+            "Отстань!",
+        ]
+    }
+
+
 def handle_dialog(req, res):
     global animal
     user_id = req['session']['user_id']
@@ -71,13 +81,7 @@ def handle_dialog(req, res):
         # Инициализируем сессию и поприветствуем его.
         # Запишем подсказки, которые мы ему покажем в первый раз
 
-        sessionStorage[user_id] = {
-            'suggests': [
-                "Не хочу.",
-                "Не буду.",
-                "Отстань!",
-            ]
-        }
+        init_sessionstorage(user_id)
         # Заполняем текст ответа
         res['response']['text'] = f'Привет! Купи {animal}!'
         # Получим подсказки
@@ -106,6 +110,7 @@ def handle_dialog(req, res):
         if animal == d[ELEPHANT]:
             animal = d[RABBIT]
             res['response']['text'] = f'А теперь купи {animal}'
+            init_sessionstorage(user_id)
             res['response']['buttons'] = get_suggests(user_id)
             return
         else:
